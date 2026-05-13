@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#060606" />
+  <title>Tüm Fotoğraflar — YMA Galeri</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#060606; --bg1:#0d0d0d; --bg2:#131313; --bg3:#1a1a1a;
+      --ln:#1e1e1e; --ln2:#2a2a2a;
+      --tx:#f4f4f4; --sub:#888; --dim:#444;
+      --acc:#d4ff00; --acc2:#bfeb00;
+      --fd:'Bricolage Grotesque',sans-serif;
+      --fb:'Instrument Sans',sans-serif;
+      --r:10px; --rs:6px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{background:var(--bg);color:var(--tx);font-family:var(--fb);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+    button{font-family:var(--fb);cursor:pointer;border:none;background:none;color:inherit}
+    ::-webkit-scrollbar{width:3px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--ln2);border-radius:2px}
+
+    /* ── NAV ── */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 32px;height:64px;
+      background:rgba(6,6,6,.92);
+      backdrop-filter:blur(20px) saturate(1.4);
+      -webkit-backdrop-filter:blur(20px) saturate(1.4);
+      border-bottom:1px solid var(--ln);
+    }
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-logo{height:26px;object-fit:contain}
+    .back-btn{
+      display:flex;align-items:center;gap:7px;
+      font-size:12px;font-weight:600;color:var(--sub);
+      background:var(--bg2);border:1px solid var(--ln2);
+      padding:7px 14px;border-radius:var(--rs);
+      transition:all .2s;
+    }
+    .back-btn:hover{color:var(--tx);border-color:var(--ln2);background:var(--bg3)}
+    .back-btn svg{width:13px;height:13px}
+    .nav-count{font-size:11px;color:var(--dim);font-family:monospace}
+
+    /* ── PAGE HEADER ── */
+    .page-header{
+      padding:96px 28px 48px;
+      max-width:1440px;margin:0 auto;
+      display:flex;align-items:flex-end;justify-content:space-between;
+      flex-wrap:wrap;gap:16px;
+    }
+    .eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);margin-bottom:8px}
+    .page-title{font-family:var(--fd);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1}
+    .header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .photo-counter{
+      font-size:11px;color:var(--sub);
+      background:var(--bg2);border:1px solid var(--ln2);
+      padding:6px 12px;border-radius:100px;
+      font-family:monospace;
+    }
+
+    /* ── MASONRY GALLERY ── */
+    .gallery-wrap{padding:0 28px 80px;max-width:1440px;margin:0 auto}
+    .masonry-grid{
+      columns:5;
+      column-gap:10px;
+    }
+    .photo-card{
+      break-inside:avoid;
+      margin-bottom:10px;
+      position:relative;overflow:hidden;
+      border-radius:var(--rs);background:var(--bg2);
+      border:1px solid var(--ln);cursor:pointer;
+      opacity:0;transform:translateY(14px);
+      transition:opacity .5s ease,transform .5s ease,box-shadow .3s,border-color .3s;
+    }
+    .photo-card.visible{opacity:1;transform:translateY(0)}
+    .photo-card:hover{border-color:var(--ln2);box-shadow:0 0 0 1px var(--ln2),0 16px 48px rgba(0,0,0,.7);z-index:2}
+    .photo-card img{width:100%;display:block;transition:transform .55s cubic-bezier(.25,.46,.45,.94)}
+    .photo-card:hover img{transform:scale(1.05)}
+    .card-ov{
+      position:absolute;inset:0;
+      background:linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,.05) 55%,transparent 100%);
+      opacity:0;transition:opacity .3s;
+      display:flex;align-items:flex-end;justify-content:space-between;
+      padding:12px;gap:6px;
+    }
+    .photo-card:hover .card-ov{opacity:1}
+    .card-name{font-size:10px;color:rgba(255,255,255,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 42px)}
+    .card-dl{
+      width:34px;height:34px;flex-shrink:0;
+      background:var(--acc);border-radius:var(--rs);
+      display:flex;align-items:center;justify-content:center;
+      color:#000;transition:all .2s;
+    }
+    .card-dl:hover{background:var(--acc2);transform:scale(1.1)}
+    .card-dl svg{width:14px;height:14px}
+    @media(hover:none){.card-ov{opacity:1}.photo-card img{transform:none!important}}
+
+    /* loading */
+    .load-state{display:flex;flex-direction:column;align-items:center;gap:14px;padding:100px 0;color:var(--sub)}
+    .spinner{width:30px;height:30px;border-radius:50%;border:2px solid var(--ln2);border-top-color:var(--acc);animation:spin .7s linear infinite}
+    .load-state p{font-size:12px;letter-spacing:.05em}
+    .err-box{background:var(--bg1);border:1px solid var(--ln);border-left:3px solid #ff4d4d;border-radius:var(--r);padding:20px 24px;max-width:600px;margin:40px auto}
+    .err-box h4{font-size:13px;font-weight:700;color:#ff6b6b;margin-bottom:6px}
+    .err-box p{font-size:12px;color:var(--sub);line-height:1.65}
+    .err-box code{font-size:11px;background:var(--bg3);padding:1px 5px;border-radius:3px;color:var(--acc);font-family:monospace}
+
+    /* download all bar */
+    .dl-bar{
+      position:sticky;bottom:24px;
+      display:flex;justify-content:center;
+      pointer-events:none;z-index:50;
+      margin-top:-20px;padding-bottom:24px;
+    }
+    .dl-all{
+      display:flex;align-items:center;gap:8px;
+      background:var(--bg2);color:var(--tx);
+      border:1px solid var(--ln2);
+      font-size:12px;font-weight:600;
+      padding:11px 22px;border-radius:100px;
+      pointer-events:all;
+      transition:all .2s;
+      box-shadow:0 8px 32px rgba(0,0,0,.6);
+    }
+    .dl-all:hover{border-color:var(--acc);color:var(--acc);background:rgba(212,255,0,.06);transform:translateY(-2px)}
+    .dl-all svg{width:14px;height:14px}
+
+    /* ── LIGHTBOX ── */
+    .lb{
+      position:fixed;inset:0;z-index:900;
+      background:rgba(0,0,0,.97);
+      backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+      display:flex;align-items:center;justify-content:center;
+      padding:max(env(safe-area-inset-top,16px),16px) 16px max(env(safe-area-inset-bottom,16px),16px);
+      opacity:0;pointer-events:none;transition:opacity .25s;
+    }
+    .lb.open{opacity:1;pointer-events:all}
+    .lb-inner{position:relative;max-width:min(95vw,1100px);width:100%;transform:scale(.95);transition:transform .25s cubic-bezier(.16,1,.3,1)}
+    .lb.open .lb-inner{transform:scale(1)}
+    .lb-img{width:100%;max-height:80svh;object-fit:contain;border-radius:var(--r);display:block}
+    .lb-bar{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px;flex-wrap:wrap}
+    .lb-meta{font-size:11px;color:var(--dim)}
+    .lb-actions{display:flex;gap:8px}
+    .lb-close{width:38px;height:38px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--ln2);display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .lb-close:hover{background:var(--bg3)}
+    .lb-close svg{width:16px;height:16px}
+    .lb-nav-btn{
+      width:38px;height:38px;border-radius:var(--rs);
+      background:var(--bg2);border:1px solid var(--ln2);
+      display:flex;align-items:center;justify-content:center;
+      transition:all .2s;
+    }
+    .lb-nav-btn:hover{border-color:var(--acc);color:var(--acc)}
+    .lb-nav-btn svg{width:16px;height:16px}
+    .lb-dl{display:flex;align-items:center;gap:7px;background:var(--acc);color:#000;font-size:13px;font-weight:700;padding:10px 20px;border-radius:var(--rs);transition:all .2s}
+    .lb-dl:hover{background:var(--acc2)}
+    .lb-dl svg{width:14px;height:14px}
+
+    /* ── TOAST ── */
+    .toast{
+      position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;
+      transform:translateX(-50%) translateY(80px);
+      background:var(--bg2);border:1px solid var(--ln2);color:var(--tx);
+      padding:10px 20px;border-radius:100px;font-size:12px;font-weight:500;
+      display:flex;align-items:center;gap:8px;
+      z-index:9999;opacity:0;pointer-events:none;white-space:nowrap;
+      transition:all .35s cubic-bezier(.16,1,.3,1);
+    }
+    .toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+    .t-dot{width:7px;height:7px;background:var(--acc);border-radius:50%;flex-shrink:0}
+
+    /* ── ANIMATIONS ── */
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1200px){.masonry-grid{columns:4}}
+    @media(max-width:900px) {.masonry-grid{columns:3}}
+    @media(max-width:640px){
+      .nav{padding:0 16px;height:56px}
+      .nav-logo{height:22px}
+      .masonry-grid{columns:2;column-gap:8px}
+      .photo-card{margin-bottom:8px}
+      .page-header{padding:80px 16px 36px}
+      .gallery-wrap{padding:0 16px 80px}
+      .lb-bar{flex-direction:column;align-items:stretch}
+      .lb-actions{justify-content:flex-end}
+    }
+    @media(max-width:400px){.masonry-grid{columns:2}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Ana Sayfa
+    </a>
+    <img src="YMA_beyaz_logo_yazısız.png" alt="YMA" class="nav-logo" />
+  </div>
+  <span class="nav-count" id="nav-count"></span>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <p class="eyebrow">Stant Etkinliği 2026</p>
+    <h1 class="page-title" style="font-family:var(--fd)">Tüm Fotoğraflar</h1>
+  </div>
+  <div class="header-right">
+    <span class="photo-counter" id="photo-counter">Yükleniyor…</span>
+  </div>
+</div>
+
+<!-- GALERİ -->
+<div class="gallery-wrap">
+  <div id="gallery-state">
+    <div class="load-state">
+      <div class="spinner"></div>
+      <p>Fotoğraflar yükleniyor…</p>
+    </div>
+  </div>
+  <div class="masonry-grid" id="masonry-grid"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" onclick="closeLb()">
+  <div class="lb-inner" onclick="event.stopPropagation()">
+    <img class="lb-img" id="lb-img" src="" alt="" />
+    <div class="lb-bar">
+      <span class="lb-meta" id="lb-meta"></span>
+      <div class="lb-actions">
+        <button class="lb-nav-btn" onclick="lbPrev()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="lb-nav-btn" onclick="lbNext()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="lb-close" onclick="closeLb()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <button class="lb-dl" id="lb-dl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Orijinal İndir
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="t-dot"></div>
+  <span id="toast-msg"></span>
+</div>
+
+<script>
+  const DRIVE_FOLDER_ID = '1KCvuHcEGCA0hZMoDNkrSLPBxpN0N5fYd';
+  const GOOGLE_API_KEY  = 'AIzaSyAFThjUJuP2Z30uQAHi8ZmJGmOZf-c2v5Y';
+
+  let FILES = [];
+  let lbIndex = 0;
+
+  /* ── Escape & arrow keys ── */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft')  lbPrev();
+    if (e.key === 'ArrowRight') lbNext();
+  });
+
+  /* ── IO ── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.04, rootMargin: '0px 0px -10px 0px' });
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    el.classList.add('on');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('on'), 2600);
+  }
+
+  /* ── Lightbox ── */
+  function openLb(index) {
+    lbIndex = index;
+    const f = FILES[lbIndex];
+    document.getElementById('lb-img').src = `https://drive.google.com/thumbnail?id=${f.id}&sz=w1600`;
+    document.getElementById('lb-meta').textContent = `${f.name.replace(/\.[^.]+$/, '')}  ·  ${lbIndex + 1} / ${FILES.length}`;
+    document.getElementById('lb-dl').onclick = () => dlFile(f);
+    document.getElementById('lb').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function lbPrev() { if (lbIndex > 0) openLb(lbIndex - 1); }
+  function lbNext() { if (lbIndex < FILES.length - 1) openLb(lbIndex + 1); }
+  function closeLb() {
+    document.getElementById('lb').classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { document.getElementById('lb-img').src = ''; }, 250);
+  }
+
+  /* ── Download ── */
+  function dlFile(file) {
+    const a = document.createElement('a');
+    a.href = `https://drive.google.com/uc?export=download&id=${file.id}`;
+    a.download = file.name; a.target = '_blank'; a.click();
+    showToast('İndirme başladı…');
+  }
+
+  /* ── Render ── */
+  function renderAll(files) {
+    FILES = files;
+    document.getElementById('gallery-state').style.display = 'none';
+    document.getElementById('photo-counter').textContent = `${files.length} fotoğraf`;
+    document.getElementById('nav-count').textContent = `${files.length} fotoğraf`;
+
+    const grid = document.getElementById('masonry-grid');
+    files.forEach((f, i) => {
+      const card = document.createElement('div');
+      card.className = 'photo-card';
+      card.style.transitionDelay = `${(i % 10) * 30}ms`;
+      card.innerHTML = `
+        <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w600"
+             alt="${f.name}" loading="lazy" />
+        <div class="card-ov">
+          <span class="card-name">${f.name.replace(/\.[^.]+$/, '')}</span>
+          <button class="card-dl" title="İndir">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>
+        </div>`;
+      card.querySelector('.card-dl').addEventListener('click', e => { e.stopPropagation(); dlFile(f); });
+      card.addEventListener('click', () => openLb(i));
+      grid.appendChild(card);
+      io.observe(card);
+    });
+  }
+
+  /* ── Load ── */
+  async function loadPhotos() {
+    // Önce sessionStorage'dan dene (index.html'den gelindi)
+    try {
+      const cached = sessionStorage.getItem('yma_files');
+      if (cached) {
+        const files = JSON.parse(cached);
+        if (files && files.length) { renderAll(files); return; }
+      }
+    } catch(e) {}
+
+    // Yoksa Drive'dan çek
+    const MIME = ['image/jpeg','image/png','image/webp','image/heic']
+      .map(m => `mimeType='${m}'`).join(' or ');
+    const q = encodeURIComponent(`'${DRIVE_FOLDER_ID}' in parents and (${MIME}) and trashed=false`);
+    const fields = encodeURIComponent('files(id,name,mimeType)');
+    const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&pageSize=200&orderBy=name&key=${GOOGLE_API_KEY}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || `HTTP ${res.status}`); }
+      const data = await res.json();
+      renderAll(data.files || []);
+    } catch(e) {
+      document.getElementById('gallery-state').innerHTML =
+        `<div class="err-box">
+           <h4>⚠️ Hata</h4>
+           <p>Drive API hatası: <code>${e.message}</code></p>
+         </div>`;
+    }
+  }
+
+  loadPhotos();
+</script>
+</body>
+</html>
