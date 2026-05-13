@@ -600,8 +600,9 @@
       return;
     }
 
-    // İlk 5'i göster
-    const preview = files.slice(0, PREVIEW_COUNT);
+// Rastgele 5 fotoğraf göster
+const shuffled = [...files].sort(() => Math.random() - 0.5);
+const preview = shuffled.slice(0, PREVIEW_COUNT);
     preview.forEach((f, i) => {
       const card = document.createElement('div');
       card.className = 'photo-card';
@@ -645,7 +646,7 @@
       .map(m => `mimeType='${m}'`).join(' or ');
     const q = encodeURIComponent(`'${DRIVE_FOLDER_ID}' in parents and (${MIME}) and trashed=false`);
     const fields = encodeURIComponent('files(id,name,mimeType)');
-    const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&pageSize=200&orderBy=name&key=${GOOGLE_API_KEY}`;
+    const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&pageSize=500&orderBy=name&key=${GOOGLE_API_KEY}`;
     try {
       const res = await fetch(url);
       if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || `HTTP ${res.status}`); }
