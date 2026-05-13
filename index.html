@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#060606" />
-  <title>Yeni Medya Atölyesi — Galeri</title>
+  <title>Yeni Medya Atölyesi</title>
   <meta name="description" content="Yeni Medya Atölyesi etkinlik fotoğraf galerisi." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -316,7 +316,12 @@
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <img src="YMA_beyaz_logo_yazısız.png" alt="Yeni Medya Atölyesi" class="nav-logo" />
+  <a href="#top"
+   onclick="event.preventDefault();document.getElementById('top').scrollIntoView({behavior:'smooth'})">
+  <img src="YMA_beyaz_logo_yazısız.png"
+       alt="Yeni Medya Atölyesi"
+       class="nav-logo" />
+</a>
   <a href="#uye-ol" class="nav-cta"
      onclick="event.preventDefault();document.getElementById('uye-ol').scrollIntoView({behavior:'smooth'})">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -383,78 +388,109 @@
 <!-- ETKİNLİK GALERİSİ SLIDER -->
 <div class="events-wrap" id="etkinlikler">
   <div class="events-inner">
+
     <div class="events-top">
       <div>
         <p class="eyebrow">02 — Etkinlik Galerisi</p>
-        <h2 class="sec-title">Geçmiş Etkinlikler</h2>
+        <h2 class="sec-title">Geçmiş Etkinliklerimiz</h2>
       </div>
+
       <div class="slider-nav">
         <button class="slider-btn" id="prev-btn" onclick="slide(-1)" aria-label="Önceki">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
         </button>
+
         <button class="slider-btn" id="next-btn" onclick="slide(1)" aria-label="Sonraki">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
         </button>
       </div>
     </div>
+
     <div class="slider-track-wrap">
       <div class="slider-track" id="slider-track">
 
+        <!-- 1 -->
         <div class="ev-card">
           <div class="ev-thumb">
-            <!-- Kapak eklemek için: ev-ph'yi sil, <img src="https://drive.google.com/thumbnail?id=DOSYA_ID&sz=w600" alt=""> yaz -->
-            <div class="ev-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+            <img src="https://drive.google.com/thumbnail?id=1O2K3LEGjeCOxcg7hwn-DFbo7gxEQJtC1&sz=w600" alt="2026 Bahar Şenliği">
           </div>
+
           <div class="ev-body">
             <span class="ev-tag">Stant Etkinliği</span>
-            <div class="ev-name">Stant Etkinliği 2026</div>
+            <div class="ev-name">2026 Bahar Şenliği</div>
           </div>
         </div>
 
+        <!-- 2 -->
         <div class="ev-card">
           <div class="ev-thumb">
-            <div class="ev-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+            <img src="https://drive.google.com/thumbnail?id=1cIOVO95p_AvhNVvqgOD2x17BljAHzKpx&sz=w600" alt="Akran Eğitimi">
           </div>
+
           <div class="ev-body">
-            <span class="ev-tag">Workshop</span>
-            <div class="ev-name">Medya Okuryazarlığı Workshop</div>
+            <span class="ev-tag">Eğitim</span>
+            <div class="ev-name">Akran Eğitimi</div>
           </div>
         </div>
 
+        <!-- 3 -->
         <div class="ev-card">
           <div class="ev-thumb">
-            <div class="ev-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+            <img src="https://drive.google.com/thumbnail?id=1xph7NkvnaUnbfgpbOPa2rFuxIFaPK-gp&sz=w600" alt="Konumuz Sosyal Medya">
           </div>
-          <div class="ev-body">
-            <span class="ev-tag">Panel</span>
-            <div class="ev-name">Dijital İçerik Paneli</div>
-          </div>
-        </div>
 
-        <div class="ev-card">
-          <div class="ev-thumb">
-            <div class="ev-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          </div>
           <div class="ev-body">
             <span class="ev-tag">Söyleşi</span>
-            <div class="ev-name">Sosyal Medya Söyleşisi</div>
+            <div class="ev-name">Konumuz Sosyal Medya</div>
           </div>
         </div>
 
+        <!-- 4 -->
         <div class="ev-card">
           <div class="ev-thumb">
-            <div class="ev-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+            <img src="https://drive.google.com/thumbnail?id=1ms-nnES44GaJhFkr5pLOExTSU2OFW6yC&sz=w600" alt="Açık Hava Sineması">
           </div>
+
           <div class="ev-body">
-            <span class="ev-tag">Tanıtım</span>
-            <div class="ev-name">Kulüp Tanıtım Günleri</div>
+            <span class="ev-tag">Sinema</span>
+            <div class="ev-name">Açık Hava Sineması</div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="ev-card">
+          <div class="ev-thumb">
+            <img src="https://drive.google.com/thumbnail?id=1hOxgUnjkWsd3dDnRmNLrAjn6ZUhSCkCH&sz=w600" alt="Quiz Day">
+          </div>
+
+          <div class="ev-body">
+            <span class="ev-tag">Yarışma</span>
+            <div class="ev-name">Quiz Day</div>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="ev-card">
+          <div class="ev-thumb">
+            <img src="https://drive.google.com/thumbnail?id=1drbpW4JoAeo0xOGebH62A4ey1S2TJW2E&sz=w600" alt="Denizli Fuar Gezisi">
+          </div>
+
+          <div class="ev-body">
+            <span class="ev-tag">Gezi</span>
+            <div class="ev-name">Denizli Fuar Gezisi</div>
           </div>
         </div>
 
       </div>
     </div>
+
   </div>
 </div>
+
 <div class="hr"></div>
 
 <!-- ÜYE OL BARI -->
